@@ -1,4 +1,4 @@
-exports.updateTransactionPool = exports.getTransactionPool = exports.addToTransactionPool = void 0;
+// exports.updateTransactionPool = exports.getTransactionPool = exports.addToTransactionPool = void 0;
 const _ = require('lodash');
 const transaction = require('./transaction');
 let transactionPool = [];
@@ -7,6 +7,29 @@ const getTransactionPool = () => {
   return _.cloneDeep(transactionPool);
 };
 exports.getTransactionPool = getTransactionPool;
+
+const getTxPoolIns = (aTransactionPool) => {
+  return _(aTransactionPool)
+    .map((tx) => tx.txIns)
+    .flatten()
+    .value();
+};
+
+const isValidTxForPool = (tx, aTransactionPool) => {
+  const txPoolIns = getTxPoolIns(aTransactionPool);
+  const containsTxIn = (txIns, txIn) => {
+    return _.find(txPoolIns, ((txPoolIn) => {
+      return txIn.txOutIndex === txPoolIn.txOutIndex && txIn.txOutId === txPoolIn.txOutId;
+    }));
+  };
+  for (const txIn of tx.txIns) {
+    if (containsTxIn(txPoolIns, txIn)) {
+      console.log('txIn already found in the txPool');
+      return false;
+    }
+  }
+  return true;
+};
 
 const addToTransactionPool = (tx, unspentTxOuts) => {
   if (!transaction.validateTransaction(tx, unspentTxOuts)) {
@@ -26,6 +49,7 @@ const hasTxIn = (txIn, unspentTxOuts) => {
   });
   return foundTxIn !== undefined;
 };
+
 const updateTransactionPool = (unspentTxOuts) => {
   const invalidTxs = [];
   for (const tx of transactionPool) {
@@ -41,26 +65,5 @@ const updateTransactionPool = (unspentTxOuts) => {
     transactionPool = _.without(transactionPool, ...invalidTxs);
   }
 };
-exports.updateTransactionPool = updateTransactionPool;
 
-const getTxPoolIns = (aTransactionPool) => {
-  return _(aTransactionPool)
-    .map((tx) => tx.txIns)
-    .flatten()
-    .value();
-};
-const isValidTxForPool = (tx, aTransactionPool) => {
-  const txPoolIns = getTxPoolIns(aTransactionPool);
-  const containsTxIn = (txIns, txIn) => {
-    return _.find(txPoolIns, ((txPoolIn) => {
-      return txIn.txOutIndex === txPoolIn.txOutIndex && txIn.txOutId === txPoolIn.txOutId;
-    }));
-  };
-  for (const txIn of tx.txIns) {
-    if (containsTxIn(txPoolIns, txIn)) {
-      console.log('txIn already found in the txPool');
-      return false;
-    }
-  }
-  return true;
-};
+exports.updateTransactionPool = updateTransactionPool;

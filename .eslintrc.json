@@ -9,25 +9,20 @@
         "ecmaVersion": "latest"
     },
     "rules": {
-        "indent": [
-            "error",
-            2
-        ],
-        "linebreak-style": [
-            "error",
-            "unix"
-        ],
-        "quotes": [
-            "error",
-            "single"
-        ],
-        "semi": [
-            "error",
-            "always"
-        ],
-        "no-restricted-imports": ["error", {
-            "patterns": [".*"]
-        }],
-        "no-unused-vars": ["error", { "vars": "local", "args": "after-used", "ignoreRestSiblings": false }]
+        "indent": ["error", 2],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "no-restricted-imports": ["error", {"patterns": [".*"]}],
+        "max-len": ["error", { "code": 150 }],
+        "no-unused-vars": ["error", { "vars": "local", "args": "after-used", "ignoreRestSiblings": false }],
+        "no-multi-spaces": "error",
+        "no-trailing-spaces": "error",
+        "object-curly-spacing": ["error", "always"],
+        "eol-last": "error",
+        "no-case-declarations": "off",
+        "no-use-before-define": ["error", { "functions": true, "classes": true, "variables": true }],
+        "no-multiple-empty-lines": ["error", { "max": 1, "maxBOF": 0 }],
+        "keyword-spacing": "error"
     }
 }
