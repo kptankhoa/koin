@@ -1,0 +1,272 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
+    <link href="./img/dollar.png" rel="icon">
+    <link href="css/bootstrap.min.css" rel="stylesheet"/>
+    <script crossorigin="anonymous" src="https://kit.fontawesome.com/dfaa57da24.js"></script>
+    <style>
+        a {
+            text-decoration: none;
+        }
+    </style>
+    <title>Transaction</title>
+</head>
+<body>
+<div class="container-xl">
+
+    <div class="container">
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="./index.html" style="margin-left:10px;">MyCoin</a>
+                <button aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation"
+                        class="navbar-toggler"
+                        data-bs-target="#navbarColor02" data-bs-toggle="collapse" type="button">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarColor02">
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="./wallet.html">My Wallet</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="./explorer.html">Explorer</a>
+                        </li>
+
+                    </ul>
+
+                </div>
+            </div>
+        </nav>
+
+        <div class="row" style="height:50px"></div>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-lg-8 p-3">
+                <div class="card border-info mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title mt-2">
+                            <i class="fas fa-search-dollar text-info"></i> Transaction Detail:</h3>
+                        <table class="table table-hover" id="table_id" style="table-layout: fixed; ">
+                            <thead style="border: none">
+                            <tr>
+                                <th class="col-3" scope="col"></th>
+                                <th class="col-9" scope="col"></th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr>
+                                <th scope="row">Hash:</th>
+                                <td id="hash"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Status:</th>
+                                <td id="status"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Size:</th>
+                                <td id="size"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Included in Block:</th>
+                                <td id="inBlock"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Input:</th>
+                                <td id="totalIn"></td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Total Output:</th>
+                                <td id="totalOut"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-lg-8 p-3">
+                <div class="card border-success mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title mt-2 mb-3">
+                            <i class="fas fa-arrow-down text-success"></i> Inputs:</h3>
+                        <div class="list-group" id="inputGroup">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+        <div class="row">
+            <div class="col"></div>
+            <div class="col-lg-8 p-3">
+                <div class="card border-danger mb-3">
+                    <div class="card-body">
+                        <h3 class="card-title mt-2 mb-3">
+                            <i class="fas fa-arrow-up text-danger"></i> Outputs:</h3>
+                        <div class="list-group" id="outputGroup">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col"></div>
+        </div>
+
+
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="https://momentjs.com/downloads/moment.min.js"></script>
+<script>
+    const hash = sessionStorage.txhash;
+    const mined = sessionStorage.mined;
+
+    $(document).ready(() => {
+        if (mined == 1) {
+            $.ajax({
+                url: 'http://localhost:3001/transaction/' + hash,
+                type: 'GET',
+            }).done(data => {
+                document.title = `Transaction ${data.tx.id}`;
+                $('#hash').text(data.tx.id);
+                $('#status').html(`<div class="text-success">In block</div>`);
+                $('#size').text(JSON.stringify(data).length + " bytes");
+                $('#inBlock').html(`<a href="./block.html" onclick="getBlockInfo('${data.blockInclude.hash}')" class="link-info">${data.blockInclude.index}</a>`);
+                $('#totalIn').text(getTotal(data.txInsData));
+                $('#totalOut').text(getTotal(data.tx.txOuts));
+                setInputData(data.tx.txIns, data.txInsData);
+                setOutputData(data.tx.txOuts);
+                console.log(data);
+            })
+        } else if (mined == 0) {
+            $.ajax({
+                url: 'http://localhost:3001/transactionPool/' + hash,
+                type: 'GET',
+            }).done(data => {
+                document.title = `Transaction ${data.tx.id}`;
+                $('#hash').text(data.tx.id);
+                $('#status').html(`<div class="text-danger">Not in block</div>`);
+                $('#size').text(JSON.stringify(data).length + " bytes");
+                $('#inBlock').html(`<a href="./explorer.html" class="link-info"><em>Pool</em></a>`);
+                $('#totalIn').text(getTotal(data.txInsData));
+                $('#totalOut').text(getTotal(data.tx.txOuts));
+                setInputData(data.tx.txIns, data.txInsData);
+                setOutputData(data.tx.txOuts);
+                console.log(data);
+            })
+        }
+
+    })
+
+    function setInputData(txIns, txInsData) {
+        // console.log(txIns, txInsData);
+        for (const [index, txIn] of txIns.entries()) {
+            const listItem = `<div class="list-group-item">
+                                <table class="table  table-sm table-borderless" style="table-layout: fixed;">
+                                    <thead>
+                                    <th class="col-2" scope="col"></th>
+                                    <th class="col-10" scope="col"></th>
+                                    </thead>
+                                    <tr>
+                                        <td>Index:</td>
+                                        <td>${index}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:</td>
+                                        <td>${setAddress(txInsData[index].address)}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Value:</td>
+                                        <td>${txInsData[index].amount}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>OutID:</td>
+<!--                                        <td>${txIn.txOutId}</td>-->
+                                        <td><a class="link-info" href="./transaction.html" onclick="getTxPage('${txIn.txOutId}')">${txIn.txOutId}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>OutIndex:</td>
+                                        <td>${txIn.txOutIndex}</td>
+                                    </tr>
+                                </table>
+                            </div>`
+            $('#inputGroup').append(listItem);
+        }
+    }
+
+    function setOutputData(txOuts) {
+        for (const [index, txOut] of txOuts.entries()) {
+            const listItem = `<div class="list-group-item">
+                                <table class="table table-sm table-borderless" style="table-layout: fixed;">
+                                    <thead>
+                                    <th class="col-2" scope="col"></th>
+                                    <th class="col-10" scope="col"></th>
+                                    </thead>
+                                    <tr>
+                                        <td>Index:</td>
+                                        <td>${index}</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:</td>
+                                        <td><a href="./address.html" onclick="getAddressPage('${txOut.address}')">${txOut.address}</a></td>
+                                    </tr>
+                                    <tr>
+                                        <td>Value:</td>
+                                        <td>${txOut.amount}</td>
+                                    </tr>
+                                </table>
+                            </div>`
+            $('#outputGroup').append(listItem);
+        }
+    }
+
+    function getBlockInfo(hash) {
+        console.log(hash);
+        if (typeof (sessionStorage) !== 'undefined') {
+            sessionStorage.hash = hash;
+        }
+    }
+
+    function getTotal(txData) {
+        let sum = 0;
+        for (const tx of txData) {
+            sum += tx.amount;
+        }
+        return sum;
+    }
+
+    function getAddressPage(address) {
+        if (typeof (sessionStorage) !== 'undefined') {
+            sessionStorage.address = address;
+            sessionStorage.mined = 0;
+        }
+    }
+
+    function getTxPage(hash) {
+        if (typeof (sessionStorage) !== 'undefined') {
+            sessionStorage.txhash = hash;
+            sessionStorage.mined = 1;
+        }
+    }
+
+    function setAddress(address) {
+        if (address === 'COINBASE')
+            return '<div class="text-success">COINBASE</div>';
+        return `<a href="./address.html" onclick="getAddressPage('${address}')">${address}</a>`;
+    }
+</script>
+
+</body>
+</html>
