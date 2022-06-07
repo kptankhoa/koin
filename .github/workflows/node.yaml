@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         node-version: [ 14, 16 ]
-        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
 
     steps:
       - uses: actions/checkout@v2
@@ -26,6 +25,13 @@ jobs:
 
       - name: Install dependencies
         run: yarn install --frozen-lockfile
+
+      - name: Deploy Heroku
+        uses: akhileshns/heroku-deploy@v3.12.12
+        with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "kp-koin"
+          heroku_email: "kptankhoa@gmail.com"
 
 #      - name: Run tests
 #        run: npm test
