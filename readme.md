@@ -4,9 +4,9 @@ Based on [NaiveCoin](https://github.com/lhartikk/naivecoin)
 
 ## Installation
 ```
-npm install
-npm start
-open '/mycoin-ui/index.html'
+yarn
+yarn start
+cd ui && open index.html
 ```
 
 ## API Usage:
@@ -17,12 +17,12 @@ curl http://localhost:3001/chain
 
 ### Mine a block
 ```
-curl -X POST http://localhost:3001/mineBlock
+curl -X POST http://localhost:3001/chain/mineBlock
 ``` 
 
 ### Send transaction
 ```
-curl -H "Content-type: application/json" --data '{"address": receiver-address, "amount" : amount}' http://localhost:3001/sendTransaction
+curl -H "Content-type: application/json" --data '{"address": receiver-address, "amount" : amount}' http://localhost:3001/wallet/sendTransaction
 ```
 
 ### Query transaction pool

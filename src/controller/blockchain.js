@@ -9,6 +9,7 @@ const { genesisBlock, DIFFICULTY_ADJUSTMENT_INTERVAL, BLOCK_GENERATION_INTERVAL 
 const { getCurrentTimestamp } = require('../utils/time.util');
 const { calculateHash, hashMatchesDifficulty } = require('../utils/hash.util');
 const { isValidNewBlock, isValidChain } = require('../utils/chain.util');
+const { isValidAddress } = require('../utils/transaction.util');
 
 let blockchain = dataHandler.getChain();
 if (!blockchain) {
@@ -39,14 +40,14 @@ const getAdjustedDifficulty = (latestBlock, aBlockchain) => {
   const timeTaken = latestBlock.timestamp - prevAdjustmentBlock.timestamp;
   if (timeTaken < timeExpected / 2) {
     return prevAdjustmentBlock.difficulty + 1;
-  } else if (timeTaken > timeExpected * 2) {
+  }
+  if (timeTaken > timeExpected * 2) {
     if (prevAdjustmentBlock.difficulty === 0) {
       return prevAdjustmentBlock.difficulty;
     }
     return prevAdjustmentBlock.difficulty - 1;
-  } else {
-    return prevAdjustmentBlock.difficulty;
   }
+  return prevAdjustmentBlock.difficulty;
 };
 
 const getDifficulty = (aBlockchain) => {
@@ -127,7 +128,7 @@ const sendRegisterRwBlock = (address) => {
 exports.sendRegisterRwBlock = sendRegisterRwBlock;
 
 const generateNextBlockWithTransaction = (receiverAddress, amount) => {
-  if (!transaction.isValidAddress(receiverAddress)) {
+  if (!isValidAddress(receiverAddress)) {
     throw Error('Invalid address');
   }
   if (typeof amount !== 'number') {

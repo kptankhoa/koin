@@ -133,7 +133,7 @@
 
     $(document).ready(() => {
         $.ajax({
-            url: 'http://localhost:3001/block/' + hash,
+            url: 'http://localhost:3001/chain/hash/' + hash,
             type: 'GET',
         }).done(data => {
             document.title = `Block ${data.index}`;

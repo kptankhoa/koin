@@ -163,7 +163,7 @@
         }).then(response => {
             if (response.isConfirmed) {
                 $.ajax({
-                    url: 'http://localhost:3001/signup',
+                    url: 'http://localhost:3001/auth/signup',
                     type: 'POST'
                 }).done(data => {
                     Swal.fire({
@@ -200,7 +200,7 @@
         })
         if (key) {
             $.ajax({
-                url: 'http://localhost:3001/signin',
+                url: 'http://localhost:3001/auth/signin',
                 type: 'POST',
                 dataType: 'json',
                 data: JSON.stringify({privateKey: key}),
@@ -229,7 +229,7 @@
             amount: +$('#amount').val()
         }
         $.ajax({
-            url: 'http://localhost:3001/sendTransaction',
+            url: 'http://localhost:3001/wallet/sendTransaction',
             type: 'POST',
             dataType: 'json',
             data: JSON.stringify(data),
@@ -252,7 +252,7 @@
 
     $('#mineBtn').on('click', () => {
         $.ajax({
-            url: 'http://localhost:3001/mineBlock',
+            url: 'http://localhost:3001/chain/mineBlock',
             type: 'POST'
         }).done(data => {
             Swal.fire({

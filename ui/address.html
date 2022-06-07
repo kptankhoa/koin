@@ -115,7 +115,7 @@
 
     $(document).ready(() => {
         $.ajax({
-            url: 'http://localhost:3001/address/' + address,
+            url: 'http://localhost:3001/transaction/address/' + address,
             type: 'GET',
         }).done(data => {
             document.title = `Address ${data.txsRelated.publicKey}`;

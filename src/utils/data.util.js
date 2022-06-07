@@ -1,8 +1,9 @@
 const fs = require('fs');
+const { KEYS_PATH, CHAIN_PATH } = require('../constants/paths.const');
 
 const getKeys = () => {
   try {
-    const data = fs.readFileSync('data/keys.json');
+    const data = fs.readFileSync(KEYS_PATH);
     if (data.length !== 0) {
       return JSON.parse(data.toString());
     }
@@ -17,18 +18,18 @@ exports.getKeys = getKeys;
 const addKey = (key) => {
   const keys = getKeys();
   keys.push(key);
-  fs.writeFileSync('data/keys.json', JSON.stringify(keys, null, 2));
+  fs.writeFileSync(KEYS_PATH, JSON.stringify(keys, null, 2));
 };
 exports.addKey = addKey;
 
 const rewriteKeySet = (keys) => {
-  fs.writeFileSync('data/keys.json', JSON.stringify(keys, null, 2));
+  fs.writeFileSync(KEYS_PATH, JSON.stringify(keys, null, 2));
 };
 exports.rewriteKeySet = rewriteKeySet;
 
 const getChain = () => {
   try {
-    const data = fs.readFileSync('data/chain.json');
+    const data = fs.readFileSync(CHAIN_PATH);
     if (data.length !== 0) {
       return JSON.parse(data.toString());
     }
@@ -40,7 +41,7 @@ const getChain = () => {
 exports.getChain = getChain;
 
 const rewriteChain = (blockchain) => {
-  fs.writeFileSync('data/chain.json', JSON.stringify(blockchain, null, 2));
+  fs.writeFileSync(CHAIN_PATH, JSON.stringify(blockchain, null, 2));
 };
 
 exports.rewriteChain = rewriteChain;

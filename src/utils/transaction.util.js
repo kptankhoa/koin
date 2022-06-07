@@ -6,10 +6,12 @@ const isValidAddress = (address) => {
   if (address.length !== 130) {
     console.log('invalid public key length');
     return false;
-  } else if (address.match('^[a-fA-F0-9]+$') === null) {
+  }
+  if (address.match('^[a-fA-F0-9]+$') === null) {
     console.log('public key must contain only hex characters');
     return false;
-  } else if (!address.startsWith('04')) {
+  }
+  if (!address.startsWith('04')) {
     console.log('public key must start with 04');
     return false;
   }
@@ -20,36 +22,40 @@ const isValidTxInStructure = (txIn) => {
   if (txIn == null) {
     console.log('txIn is null');
     return false;
-  } else if (typeof txIn.signature !== 'string') {
+  }
+  if (typeof txIn.signature !== 'string') {
     console.log('invalid signature type in txIn');
     return false;
-  } else if (typeof txIn.txOutId !== 'string') {
+  }
+  if (typeof txIn.txOutId !== 'string') {
     console.log('invalid txOutId type in txIn');
     return false;
-  } else if (typeof txIn.txOutIndex !== 'number') {
+  }
+  if (typeof txIn.txOutIndex !== 'number') {
     console.log('invalid txOutIndex type in txIn');
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
 
 const isValidTxOutStructure = (txOut) => {
   if (txOut == null) {
     console.log('txOut is null');
     return false;
-  } else if (typeof txOut.address !== 'string') {
+  }
+  if (typeof txOut.address !== 'string') {
     console.log('invalid address type in txOut');
     return false;
-  } else if (!isValidAddress(txOut.address)) {
+  }
+  if (!isValidAddress(txOut.address)) {
     console.log('invalid TxOut address');
     return false;
-  } else if (typeof txOut.amount !== 'number') {
+  }
+  if (typeof txOut.amount !== 'number') {
     console.log('invalid amount type in txOut');
     return false;
-  } else {
-    return true;
   }
+  return true;
 };
 
 const isValidTransactionStructure = (transaction) => {

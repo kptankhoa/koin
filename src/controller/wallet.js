@@ -35,11 +35,7 @@ exports.registerNewWallet = registerNewWallet;
 
 const isKeyExist = (privateKey) => {
   const keys = dataHandler.getKeys();
-  for (const key of keys) {
-    if (key.privateKey === privateKey)
-      return true;
-  }
-  return false;
+  return keys.some((key) => key.privateKey === privateKey);
 };
 exports.isKeyExist = isKeyExist;
 
