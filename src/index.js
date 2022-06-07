@@ -18,7 +18,7 @@ const poolRouter = require('./route/pool.route');
 const walletRouter = require('./route/wallet.route');
 const p2pRouter = require('./route/p2p.route');
 
-const httpPort = parseInt(process.env.HTTP_PORT) || 3001;
+const httpPort = parseInt(process.env.PORT) || 3001;
 const p2pPort = parseInt(process.env.P2P_PORT) || 6001;
 
 const initHttpServer = (myHttpPort) => {
