@@ -82,5 +82,6 @@ const isValidChain = (blockchainToValidate) => {
 
 module.exports = {
   isValidChain,
+  isValidBlockStructure,
   isValidNewBlock
 };

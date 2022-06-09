@@ -3,6 +3,7 @@ const blockchain = require('../controller/blockchain');
 const transactionPool = require('../controller/transactionPool');
 const dataHandler = require('./data.util');
 const { MessageType } = require('../constants/p2p.const');
+const { isValidBlockStructure } = require('./chain.util');
 
 // server
 let server;
@@ -74,7 +75,7 @@ function handleBlockChainResponse(receivedBlocks) {
     return;
   }
   const latestBlockReceived = receivedBlocks[receivedBlocks.length - 1];
-  if (!blockchain.isValidBlockStructure(latestBlockReceived)) {
+  if (!isValidBlockStructure(latestBlockReceived)) {
     console.log('Block structure not valid');
     return;
   }
