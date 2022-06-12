@@ -10,7 +10,7 @@ describe('test chain file', () => {
     });
 
     it('has valid genesis block', () => {
-      expect(JSON.stringify(chain[0]) === JSON.stringify(genesisBlock)).toBe(true);
+      expect(chain[0]).toEqual(genesisBlock);
     });
   });
 });
