@@ -43,7 +43,6 @@ jobs:
           from: Khoa Phan
           secure: true
           body: Build job of ${{github.repository}} completed successfully!
-#          cc: kyloren@example.com,leia@example.com
           ignore_cert: true
           priority: normal
 
