@@ -16,7 +16,7 @@ const createServer = () => {
   app.use(session({ secret: 'not a secret', resave: true, saveUninitialized: true }));
   app.use(timeout(3000));
 
-  // routes(app);
+  routes(app);
 
   return app;
 };
