@@ -21,33 +21,33 @@ describe('test auth apis', () => {
   let privateKey;
 
   describe('POST /auth/signup', () => {
-	it ('should be 200', async () => {
-	  await request
-		.post('/auth/signup')
-		.expect(200);
-	});
+    it ('should be 200', async () => {
+      await request
+        .post('/auth/signup')
+        .expect(200);
+    });
 
-	it ('should have valid keys', async () => {
-	  const { body } = await request.post('/auth/signup');
-	  privateKey = body.privateKey;
-	  expect(validSignUpResponseBody(body)).toBe(true);
-	});
+    it ('should have valid keys', async () => {
+      const { body } = await request.post('/auth/signup');
+      privateKey = body.privateKey;
+      expect(validSignUpResponseBody(body)).toBe(true);
+    });
   });
 
   describe('POST /auth/signin', () => {
-	it ('should be 200', async () => {
-	  await request
-		.post('/auth/signin')
-		.send({ privateKey })
-		.expect(200);
-	});
+    it ('should be 200', async () => {
+      await request
+        .post('/auth/signin')
+        .send({ privateKey })
+        .expect(200);
+    });
 
-	it ('should have valid keys', async () => {
-	  const { body } = await request
-		.post('/auth/signin')
-		.send({ privateKey });
-	  expect(validSignInResponseBody(body)).toBe(true);
-	});
+    it ('should have valid keys', async () => {
+      const { body } = await request
+        .post('/auth/signin')
+        .send({ privateKey });
+      expect(validSignInResponseBody(body)).toBe(true);
+    });
 
   });
 });
