@@ -129,6 +129,14 @@ function initP2PServer(port) {
 }
 exports.initP2PServer = initP2PServer;
 
+function closeServer() {
+  if (!server) {
+    return;
+  }
+  server.close();
+}
+exports.closeServer = closeServer;
+
 function getSockets() {
   return [...server.clients];
 }

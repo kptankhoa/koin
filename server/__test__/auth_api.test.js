@@ -15,6 +15,7 @@ const validSignInResponseBody = (body) => {
   return keys.includes("balance") && keys.includes("publicKey");
 };
 
+
 describe("test auth apis", () => {
   beforeAll(() => {
     p2p.initP2PServer(4599);
