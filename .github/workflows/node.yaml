@@ -40,11 +40,11 @@ jobs:
           password: ${{secrets.MAIL_PASSWORD}}
           subject: Github Actions job result
           to: kptankhoa@gmail.com
-          from: Khoa Phan
+          from: KhoaPhan
           secure: true
           body: Build job of ${{github.repository}} completed successfully!
 #          cc: kyloren@example.com,leia@example.com
           ignore_cert: true
-          priority: normal
+          priority: high
 
 #      - run: npm run build --if-present
