@@ -71,6 +71,7 @@ describe('test auth apis', () => {
     });
 
     const keyData = getDataKeys();
+
     it.each(keyData.successKeys)('should be successful', async (key) => {
       await request.post('/auth/signin').send({ privateKey: key }).expect(200);
     });

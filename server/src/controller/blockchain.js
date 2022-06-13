@@ -21,8 +21,15 @@ for (const block of blockchain) {
   unspentTxOuts = transaction.processTransactions(block.data, unspentTxOuts, block.index);
 }
 
-const getBlockchain = () => blockchain;
+const getBlockchain = () => {
+  const fileBlockchain = dataHandler.getChain();
+  if (fileBlockchain.length > blockchain.length && isValidChain(fileBlockchain)) {
+    blockchain = fileBlockchain;
+  }
+  return blockchain;
+};
 exports.getBlockchain = getBlockchain;
+
 const getUnspentTxOuts = () => _.cloneDeep(unspentTxOuts);
 exports.getUnspentTxOuts = getUnspentTxOuts;
 

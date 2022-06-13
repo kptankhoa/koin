@@ -9,6 +9,13 @@ const getDataKeys = () => {
   }
 };
 
+const getHashData = () => {
+  const data = fs.readFileSync(test_paths.test_hash);
+  if (data.length !== 0) {
+    return JSON.parse(data.toString());
+  }
+};
+
 const setUpSampleData = () => {
   const sampleChainData = fs.readFileSync(test_paths.sample_chain_data);
   const sampleKeyData = fs.readFileSync(test_paths.sample_keys_data);
@@ -23,6 +30,7 @@ const cleanUpSampleData = () => {
 
 module.exports = {
   getDataKeys,
+  getHashData,
   setUpSampleData,
   cleanUpSampleData
 };
