@@ -40,19 +40,6 @@ describe('test auth apis', () => {
   });
 
   describe('POST /auth/signin', () => {
-    it ('should be 400 (empty body)', async () => {
-      await request
-        .post('/auth/signin')
-        .expect(400);
-    });
-
-    it ('should be 400 (wrong key)', async () => {
-      const { body } = await request
-        .post('/auth/signin')
-        .send({ privateKey: 'abcde' });
-      expect(body.error_message).toEqual('Key not found!');
-    });
-
     it ('should be 200', async () => {
       await request
         .post('/auth/signin')
