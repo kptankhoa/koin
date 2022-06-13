@@ -46,14 +46,11 @@ jobs:
           ignore_cert: true
           priority: normal
 
-      - name: Slack Notification
-        uses: rtCamp/action-slack-notify@v2
+      - name: Report Status
+        if: always()
+        uses: ravsamhq/notify-slack-action@v1
+        with:
+          status: ${{ job.status }}
+          notify_when: 'failure'
         env:
-          SLACK_COLOR: ${{job.status}} # or a specific color like 'good' or '#ff00ff'
-          SLACK_ICON: https://github.com/rtCamp.png?size=48
-          SLACK_MESSAGE: Build job of ${{github.repository}} completed successfully!
-          SLACK_TITLE: ${{job.status}}
-          SLACK_USERNAME: rtCamp
-          SLACK_WEBHOOK: ${{secrets.SLACK_WEBHOOK}}
-
-#      - run: npm run build --if-present
+          SLACK_WEBHOOK_URL: ${{secrets.SLACK_WEBHOOK}}
