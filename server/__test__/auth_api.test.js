@@ -16,12 +16,12 @@ const validSignInResponseBody = (body) => {
   return keys.includes('balance') && keys.includes('publicKey');
 };
 
-const getDataKeys = () => {
-  const data = fs.readFileSync('__test__/test_data/keys_data.json');
-  if (data.length !== 0) {
-    return JSON.parse(data.toString());
-  }
-};
+// const getDataKeys = () => {
+//   const data = fs.readFileSync('__test__/test_data/keys_data.json');
+//   if (data.length !== 0) {
+//     return JSON.parse(data.toString());
+//   }
+// };
 
 describe('test auth apis', () => {
   beforeAll(() => {
