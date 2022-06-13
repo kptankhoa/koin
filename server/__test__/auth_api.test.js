@@ -16,14 +16,12 @@ const validSignInResponseBody = (body) => {
 };
 
 describe('test auth apis', () => {
-  beforeAll((done) => {
-    p2p.initP2PServer(6002);
-    done();
+  beforeAll(() => {
+    p2p.initP2PServer(4599);
   });
 
-  afterAll((done) => {
+  afterAll(() => {
     p2p.closeServer();
-    done();
   });
   let privateKey;
 

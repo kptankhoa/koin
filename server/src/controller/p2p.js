@@ -133,7 +133,7 @@ function closeServer() {
   if (!server) {
     return;
   }
-  server.terminate();
+  server.close();
 }
 exports.closeServer = closeServer;
 
