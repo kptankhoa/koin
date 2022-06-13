@@ -40,7 +40,7 @@ jobs:
           password: ${{secrets.MAIL_PASSWORD}}
           subject: Github Actions job result
           to: kptankhoa@gmail.com
-          from: KhoaPhan
+          from: Khoa Phan
           secure: true
           body: Build job of ${{github.repository}} completed successfully!
 #          cc: kyloren@example.com,leia@example.com
