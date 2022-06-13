@@ -1,7 +1,7 @@
 const createServer = require('../src/utils/server.util');
 const supertest = require('supertest');
 const p2p = require('../src/controller/p2p');
-const fs = require('fs');
+const { getDataKeys, setUpSampleData, cleanUpSampleData } = require('./test_data/sample/sample_data.util');
 
 const app = createServer();
 const request = supertest(app);
@@ -16,13 +16,6 @@ const validSignInResponseBody = (body) => {
   return keys.includes('balance') && keys.includes('publicKey');
 };
 
-const getDataKeys = () => {
-  const data = fs.readFileSync('__test__/test_data/keys_data.json');
-  if (data.length !== 0) {
-    return JSON.parse(data.toString());
-  }
-};
-
 describe('test auth apis', () => {
   beforeAll(() => {
     p2p.initP2PServer(4599);
@@ -31,6 +24,7 @@ describe('test auth apis', () => {
   afterAll(() => {
     p2p.closeServer();
   });
+
   let privateKey;
 
   describe('POST /auth/signup', () => {
@@ -68,6 +62,14 @@ describe('test auth apis', () => {
   });
 
   describe('sign in from data', () => {
+    beforeAll(() => {
+      setUpSampleData();
+    });
+
+    afterAll(() => {
+      cleanUpSampleData();
+    });
+
     const keyData = getDataKeys();
     it.each(keyData.successKeys)('should be successful', async (key) => {
       await request.post('/auth/signin').send({ privateKey: key }).expect(200);
